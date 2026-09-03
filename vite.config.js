@@ -5,4 +5,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
     base: '/jubensha-appetite-test/',
     plugins: [react()],
+    build: {
+        // Covers current Android/iOS WeChat webviews without requiring an
+        // additional legacy bundle.
+        target: 'es2017',
+    },
 });
