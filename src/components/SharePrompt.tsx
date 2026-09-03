@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toPng } from 'html-to-image';
+import { track } from '../analytics';
 
 export function SharePrompt() {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,7 @@ export function SharePrompt() {
         const key = `jubensha-share-prompt-${saved.completedAt || ''}`;
         if (saved.completedAt && !sessionStorage.getItem(key)) {
           sessionStorage.setItem(key, '1');
+          track('share_prompt_shown');
           setOpen(true);
         }
       } catch {
@@ -29,6 +31,7 @@ export function SharePrompt() {
     setOpen(false);
     await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
     const dataUrl = await toPng(result, { backgroundColor: '#f8f3e9', pixelRatio: 2, cacheBust: true });
+    track('image_generated');
     const blob = await (await fetch(dataUrl)).blob();
     return { dataUrl, file: new File([blob], '我的剧本杀胃口.png', { type: 'image/png' }) };
   };
@@ -47,6 +50,7 @@ export function SharePrompt() {
   const shareImage = async () => {
     try {
       const { dataUrl, file } = await createImage();
+      track('image_shared');
       if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
         await navigator.share({ title: '我的剧本杀胃口', text: '来测测你的剧本杀胃口', files: [file] });
         return;
