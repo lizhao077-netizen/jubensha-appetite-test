@@ -1,0 +1,8 @@
+/* QR sizing and first-completion share prompt. */
+.result .radar .result-qr{display:grid!important;place-items:center;width:68px!important;height:80px!important;overflow:hidden}
+.result .radar .result-qr svg{width:58px!important;height:58px!important;min-width:58px!important;max-width:58px!important;margin:0!important}
+.result .radar .result-qr small{margin:0!important;white-space:nowrap}
+.share-prompt{position:fixed;inset:0;z-index:20;display:grid;place-items:end center;padding:18px;background:rgba(28,20,18,.48);backdrop-filter:blur(2px)}
+.share-prompt article{position:relative;width:min(100%,430px);padding:25px 22px max(20px,env(safe-area-inset-bottom));background:#fbf6ed;border-radius:14px 14px 5px 5px;border-top:3px solid #7e2d33;box-shadow:0 -8px 40px #1e151055;text-align:center}
+.share-prompt h2{margin:7px 0 8px;font-family:Georgia,"Songti SC",serif;font-size:25px;color:#50262a}.share-prompt p:not(.eyebrow){margin:0 0 17px;color:#725f51;font-size:14px}
+.share-prompt .primary,.share-prompt .outline{width:100%;margin:5px 0;padding:12px}.share-prompt-close{position:absolute;top:8px;right:12px;border:0;background:transparent;color:#786555;font-size:25px}.share-prompt .text-button{font-size:12px;margin-top:2px}
