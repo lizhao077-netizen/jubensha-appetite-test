@@ -7,16 +7,21 @@ export function SharePrompt() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem('jubensha-appetite-v1') || '{}');
-      const key = `jubensha-share-prompt-${saved.completedAt || ''}`;
-      if (saved.completedAt && !sessionStorage.getItem(key)) {
-        sessionStorage.setItem(key, '1');
-        window.setTimeout(() => setOpen(true), 220);
+    // The parent writes completedAt in an effect. Waiting one short beat makes
+    // the dialog reliable immediately after the last answer is submitted.
+    const timer = window.setTimeout(() => {
+      try {
+        const saved = JSON.parse(localStorage.getItem('jubensha-appetite-v1') || '{}');
+        const key = `jubensha-share-prompt-${saved.completedAt || ''}`;
+        if (saved.completedAt && !sessionStorage.getItem(key)) {
+          sessionStorage.setItem(key, '1');
+          setOpen(true);
+        }
+      } catch {
+        // The result page remains usable if storage is unavailable.
       }
-    } catch {
-      // The result page remains usable if storage is unavailable.
-    }
+    }, 420);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const saveImage = async () => {

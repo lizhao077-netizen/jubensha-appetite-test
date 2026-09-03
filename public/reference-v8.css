@@ -1,0 +1,4 @@
+/* Result QR belongs to the page edge, not to the radar plot. */
+.result .radar{position:static!important}
+.result .radar .result-qr{position:absolute!important;top:auto!important;right:16px!important;bottom:16px!important;transform:none!important}
+.result .result-section:nth-of-type(3) .tags{max-height:54px;overflow:visible}
