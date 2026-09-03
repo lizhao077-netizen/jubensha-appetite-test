@@ -3,6 +3,7 @@ import { toPng } from 'html-to-image';
 
 export function SharePrompt() {
   const [open, setOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // The parent writes completedAt in an effect. Waiting one short beat makes
@@ -35,11 +36,9 @@ export function SharePrompt() {
   const saveImage = async () => {
     try {
       const { dataUrl } = await createImage();
-      const link = document.createElement('a');
-      link.download = '我的剧本杀胃口.png';
-      link.href = dataUrl;
-      link.click();
-      window.setTimeout(() => window.alert('图片已生成。保存后可在微信发送给好友或发布朋友圈。'), 180);
+      // WeChat reliably saves a real image shown in-page through its long-press
+      // menu, whereas programmatic downloads usually go to an invisible cache.
+      setPreviewUrl(dataUrl);
     } catch {
       window.alert('图片生成失败，请长按页面截图保存。');
     }
@@ -52,15 +51,18 @@ export function SharePrompt() {
         await navigator.share({ title: '我的剧本杀胃口', text: '来测测你的剧本杀胃口', files: [file] });
         return;
       }
-      const link = document.createElement('a');
-      link.download = file.name;
-      link.href = dataUrl;
-      link.click();
-      window.setTimeout(() => window.alert('已生成图片。请保存后在微信选择「发送给朋友」或「分享到朋友圈」。'), 180);
+      setPreviewUrl(dataUrl);
     } catch {
       // Closing a system share sheet does not need an error prompt.
     }
   };
+
+  if (previewUrl) return <div className="image-preview" role="dialog" aria-modal="true" aria-label="长按保存胃口卡">
+    <p>长按图片，选择「保存图片」</p>
+    <img src={previewUrl} alt="我的剧本杀胃口卡" />
+    <small>保存后可在微信发送给好友或发布朋友圈</small>
+    <button className="outline" onClick={() => setPreviewUrl(null)}>返回结果</button>
+  </div>;
 
   if (!open) return null;
   return <div className="share-prompt" role="dialog" aria-modal="true" aria-label="保存并分享胃口卡">
@@ -70,7 +72,7 @@ export function SharePrompt() {
       <h2>你的胃口卡做好了</h2>
       <p>保存胃口卡，发给好友或分享到朋友圈。</p>
       <button className="primary" onClick={shareImage}>保存图片并分享</button>
-      <button className="outline" onClick={saveImage}>仅保存图片</button>
+      <button className="outline" onClick={saveImage}>生成图片</button>
       <button className="text-button" onClick={() => setOpen(false)}>先看看结果</button>
     </article>
   </div>;

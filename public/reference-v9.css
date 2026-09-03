@@ -1,0 +1,3 @@
+/* A real image preview enables WeChat's long-press Save Image menu. */
+.image-preview{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 14px) 16px max(16px,env(safe-area-inset-bottom));background:#171311;color:#fff6e6;text-align:center;overflow:auto}
+.image-preview p{margin:0;font-size:15px;font-weight:700}.image-preview img{display:block;width:min(100%,390px);max-height:calc(100dvh - 155px);object-fit:contain;border-radius:4px;box-shadow:0 8px 32px #0009;user-select:none;-webkit-user-select:none}.image-preview small{color:#ddc9aa;font-size:12px}.image-preview .outline{width:min(100%,390px);border-color:#e7d2b0;color:#fff4dd;background:transparent;padding:10px}
