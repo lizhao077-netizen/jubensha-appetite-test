@@ -1,0 +1,11 @@
+/* Keep result tags readable and reserve a clean crop row in the share card. */
+.result .result-section:nth-of-type(2) .tags{max-height:54px;overflow:visible}
+.result{padding-bottom:96px}
+.result .radar .result-qr{top:auto!important;right:16px!important;bottom:16px!important;transform:none!important}
+.share-card{position:relative;padding-bottom:16px}
+.share-card .radar{display:contents}
+.share-card .radar>svg{order:0}
+.share-card .legend{order:0}
+.share-card .share-card-qr{order:10;align-self:flex-end;display:flex;align-items:center;gap:6px;min-width:128px;margin-top:auto;padding-top:7px;border-top:1px solid rgba(182,155,118,.55);color:#8b7059;text-decoration:none;font-size:9px;line-height:1}
+.share-card .share-card-qr svg{display:block!important;width:54px!important;height:54px!important;min-width:54px!important;max-width:54px!important;margin:0!important}
+.share-card .share-card-qr small{margin:0!important;white-space:nowrap;font-size:9px}
