@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toPng } from 'html-to-image';
 
-const PAGE_URL = 'https://lizhao077-netizen.github.io/jubensha-appetite-test/';
-
 export function SharePrompt() {
   const [open, setOpen] = useState(false);
 
@@ -24,32 +22,43 @@ export function SharePrompt() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  const saveImage = async () => {
+  const createImage = async () => {
     const result = document.querySelector('.result') as HTMLElement | null;
-    if (!result) return;
+    if (!result) throw new Error('Result card not found');
     setOpen(false);
+    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    const dataUrl = await toPng(result, { backgroundColor: '#f8f3e9', pixelRatio: 2, cacheBust: true });
+    const blob = await (await fetch(dataUrl)).blob();
+    return { dataUrl, file: new File([blob], '我的剧本杀胃口.png', { type: 'image/png' }) };
+  };
+
+  const saveImage = async () => {
     try {
-      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
-      const dataUrl = await toPng(result, { backgroundColor: '#f8f3e9', pixelRatio: 2, cacheBust: true });
+      const { dataUrl } = await createImage();
       const link = document.createElement('a');
       link.download = '我的剧本杀胃口.png';
       link.href = dataUrl;
       link.click();
+      window.setTimeout(() => window.alert('图片已生成。保存后可在微信发送给好友或发布朋友圈。'), 180);
     } catch {
       window.alert('图片生成失败，请长按页面截图保存。');
     }
   };
 
-  const shareLink = async () => {
-    const content = { title: '测测你的剧本杀胃口', text: '47 种剧情线，你到底能吃多少？', url: PAGE_URL };
+  const shareImage = async () => {
     try {
-      if (navigator.share) await navigator.share(content);
-      else {
-        await navigator.clipboard?.writeText(PAGE_URL);
-        window.alert('链接已复制，去微信粘贴分享吧。');
+      const { dataUrl, file } = await createImage();
+      if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+        await navigator.share({ title: '我的剧本杀胃口', text: '来测测你的剧本杀胃口', files: [file] });
+        return;
       }
+      const link = document.createElement('a');
+      link.download = file.name;
+      link.href = dataUrl;
+      link.click();
+      window.setTimeout(() => window.alert('已生成图片。请保存后在微信选择「发送给朋友」或「分享到朋友圈」。'), 180);
     } catch {
-      // Dismissing the system share sheet is not an error that needs to interrupt the user.
+      // Closing a system share sheet does not need an error prompt.
     }
   };
 
@@ -59,9 +68,9 @@ export function SharePrompt() {
       <button className="share-prompt-close" onClick={() => setOpen(false)} aria-label="关闭">×</button>
       <p className="eyebrow">RESULT / READY</p>
       <h2>你的胃口卡做好了</h2>
-      <p>保存图片，发到群里看看谁和你同桌。</p>
-      <button className="primary" onClick={saveImage}>保存图片</button>
-      <button className="outline" onClick={shareLink}>分享链接</button>
+      <p>保存胃口卡，发给好友或分享到朋友圈。</p>
+      <button className="primary" onClick={shareImage}>保存图片并分享</button>
+      <button className="outline" onClick={saveImage}>仅保存图片</button>
       <button className="text-button" onClick={() => setOpen(false)}>先看看结果</button>
     </article>
   </div>;
