@@ -1,0 +1,29 @@
+/* Mobile contrast and compact-result pass. */
+.home{background:linear-gradient(180deg,rgba(3,7,8,.82),rgba(5,9,10,.96)),linear-gradient(125deg,#2f1f18,#090e10 48%,#241711)}
+.home .archive-no,.home .eyebrow{color:#efd39e;text-shadow:0 1px 7px #000}
+.home h1{color:#fff8ec;text-shadow:0 2px 12px #000,0 0 1px #000}
+.home h1 em{color:#ff625f;text-shadow:0 2px 10px #3c0507}
+.home .intro{color:#fff0db;text-shadow:0 1px 7px #000}
+.home .category-strip{border-color:rgba(255,224,174,.55);background:rgba(0,0,0,.28)}
+.home .category-strip span{color:#fff2db;text-shadow:0 1px 5px #000}
+.home .time{color:#fff0d5;text-shadow:0 1px 7px #000}
+.home .time small,.home .footnote{color:#e8d2ad;text-shadow:0 1px 6px #000}
+.home .primary{background:linear-gradient(100deg,#9b2025,#d84042);color:#fffaf0;box-shadow:0 7px 20px #0007}
+
+.result{padding:19px 16px 14px}
+.result .eyebrow{margin:0 0 2px}
+.result h1{font-size:47px;line-height:1;margin:5px 0 1px}
+.result .capacity{font-size:13px}.result .capacity b{font-size:18px}
+.result .subtitle{margin:5px auto 3px;line-height:1.35;font-size:12px;max-width:245px}
+.result .radar{margin:0 auto 3px}.result .radar svg{width:min(100%,205px)}
+.result .legend{gap:11px;font-size:10px}.result .legend i{width:16px}
+.result .result-section{display:grid;grid-template-columns:52px 1fr;gap:6px;align-items:start;margin-top:5px;padding-top:5px}
+.result .result-section h3{margin:3px 0 0;font-size:11px;white-space:nowrap}
+.result .result-section .tags{gap:3px;max-height:38px;overflow:hidden;font-size:10px;line-height:1.2}
+.result .result-section .tags span{padding:3px 5px}
+.result blockquote{margin:7px 0 5px;padding:4px 0 4px 9px;font-size:12px;line-height:1.4}
+.result .primary,.result .outline{display:inline-block;width:calc(50% - 4px);margin-top:5px;padding:10px 4px;font-size:12px}
+.result .primary{margin-right:4px}.result .outline{margin-left:4px}
+.result .text-button{display:block;width:auto;margin:0 auto!important;padding:4px 8px;font-size:11px}
+.result .radar .result-qr{top:10px;right:10px;transform:scale(.82);transform-origin:top right}
+@media(max-height:760px){.result{padding-top:13px}.result h1{font-size:43px}.result .radar svg{width:184px}.result .result-section{margin-top:3px;padding-top:3px}.result blockquote{margin:4px 0}.result .result-section .tags{max-height:29px}}
