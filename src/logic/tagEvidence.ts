@@ -8,6 +8,7 @@ export type Tag = {
   strength: number;
   supportingQuestions: string[];
   evidenceScore: number;
+  rawEvidence: number;
   loveCount: number;
 };
 
@@ -28,8 +29,11 @@ export function tagEvidence(answers: Answers, supportingQuestions: string[], pri
   const likes = values.filter(value => value === 'like').length;
   const noes = values.filter(value => value === 'no').length;
   const avoids = values.filter(value => value === 'avoid').length;
+  // Keep the five answer tiers as an independent, inspectable evidence layer.
+  // It is deliberately not the capacity score: a strong tag still needs love.
+  const rawEvidence = values.reduce((total, value) => total + (value ? evidence[value] : 0), 0);
   const score = priority + loves * 10 + likes * 3 + (contrast ? 8 : 0) - noes * 4 - avoids * 12;
-  return { evidenceScore: score, loveCount: loves, strength: score };
+  return { evidenceScore: score, rawEvidence, loveCount: loves, strength: score };
 }
 
 type Rule = { id: string; label: string; priority: number; supportingQuestions: string[]; contrast?: boolean; minLove?: number; when: () => boolean };
@@ -82,5 +86,5 @@ export function getTags(answers: Answers): Tag[] {
     const minimum = rule.minLove ?? 1;
     if (item.loveCount < minimum) return [];
     return [{ id: rule.id, label: rule.label, priority: rule.priority, supportingQuestions: rule.supportingQuestions, ...item }];
-  }).sort((left, right) => right.evidenceScore - left.evidenceScore || right.loveCount - left.loveCount || right.priority - left.priority).slice(0, 3);
+  }).sort((left, right) => right.evidenceScore - left.evidenceScore || right.loveCount - left.loveCount || right.rawEvidence - left.rawEvidence || right.priority - left.priority).slice(0, 3);
 }
